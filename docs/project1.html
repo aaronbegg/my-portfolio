@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Aaron Begg – 567 070 685" />
+
+<meta name="date" content="2025-12-05" />
+
+<title>Data Import and Exploration</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="projects.html">Projects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Data Import and Exploration</h1>
+<h3 class="subtitle">CSV Import and Data Cleaning</h3>
+<h4 class="author">Aaron Begg – 567 070 685</h4>
+<h4 class="date">2025-12-05</h4>
+
+</div>
+
+
+<div id="data-import-and-exploration" class="section level1">
+<h1>Data Import and Exploration</h1>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a>regional_sales <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>  <span class="at">region =</span> <span class="fu">c</span>(<span class="st">&quot;North&quot;</span>, <span class="st">&quot;South&quot;</span>, <span class="st">&quot;East&quot;</span>, <span class="st">&quot;West&quot;</span>, <span class="st">&quot;North&quot;</span>, <span class="st">&quot;South&quot;</span>, <span class="st">&quot;East&quot;</span>, <span class="st">&quot;West&quot;</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a>             <span class="st">&quot;North&quot;</span>, <span class="st">&quot;South&quot;</span>, <span class="st">&quot;East&quot;</span>, <span class="st">&quot;West&quot;</span>, <span class="st">&quot;North&quot;</span>, <span class="st">&quot;South&quot;</span>, <span class="st">&quot;East&quot;</span>, </span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>             <span class="st">&quot;North&quot;</span>, <span class="st">&quot;South&quot;</span>,<span class="st">&quot;North&quot;</span>),  </span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>  <span class="at">quarter =</span> <span class="fu">c</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>), <span class="at">each =</span> <span class="dv">4</span>), <span class="st">&quot;Q4&quot;</span>, <span class="st">&quot;Q4&quot;</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>  <span class="at">revenue =</span> <span class="fu">c</span>(<span class="dv">125000</span>, <span class="dv">98000</span>, <span class="dv">115000</span>, <span class="dv">102000</span>, </span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>              <span class="dv">138000</span>, <span class="dv">105000</span>, <span class="dv">128000</span>, <span class="dv">118000</span>,</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a>              <span class="dv">142000</span>, <span class="dv">89000</span>, <span class="dv">135000</span>, <span class="dv">125000</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>              <span class="dv">155000</span>, <span class="dv">112000</span>, <span class="dv">148000</span>, <span class="dv">165000</span>, </span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>              <span class="dv">120000</span>, <span class="dv">91250</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>  <span class="at">customers =</span> <span class="fu">c</span>(<span class="dv">450</span>, <span class="dv">380</span>, <span class="dv">420</span>, <span class="dv">395</span>, </span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>                <span class="dv">485</span>, <span class="dv">415</span>, <span class="dv">465</span>, <span class="dv">445</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>                <span class="dv">520</span>, <span class="dv">350</span>, <span class="dv">485</span>, <span class="dv">470</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>                <span class="dv">575</span>, <span class="dv">425</span>, <span class="dv">545</span>, <span class="dv">590</span>, <span class="dv">435</span>,<span class="dv">324</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>)</span></code></pre></div>
+<div id="a." class="section level2">
+<h2>a.</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="fu">str</span>(regional_sales)</span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    18 obs. of  4 variables:
+##  $ region   : chr  &quot;North&quot; &quot;South&quot; &quot;East&quot; &quot;West&quot; ...
+##  $ quarter  : chr  &quot;Q1&quot; &quot;Q1&quot; &quot;Q1&quot; &quot;Q1&quot; ...
+##  $ revenue  : num  125000 98000 115000 102000 138000 105000 128000 118000 142000 89000 ...
+##  $ customers: num  450 380 420 395 485 415 465 445 520 350 ...</code></pre>
+<blockquote>
+<p>There are 18 observations of 4 variables. The data types of the
+variables are:</p>
+</blockquote>
+<ul>
+<li>Region (chr)</li>
+<li>Quarter (chr)</li>
+<li>Revenue (num)</li>
+<li>Customers (num)</li>
+</ul>
+<blockquote>
+<p>For 4 quarters of data between 4 regions, we would expect only 16
+data points. Further investigation may be needed to find out if these
+were partial data entries that need to be combined with similar data, or
+erroneously completed entries that should be removed from the
+dataset.</p>
+</blockquote>
+</div>
+<div id="b." class="section level2">
+<h2>b.</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="fu">head</span>(regional_sales)</span></code></pre></div>
+<pre><code>##   region quarter revenue customers
+## 1  North      Q1  125000       450
+## 2  South      Q1   98000       380
+## 3   East      Q1  115000       420
+## 4   West      Q1  102000       395
+## 5  North      Q2  138000       485
+## 6  South      Q2  105000       415</code></pre>
+<blockquote>
+<p>The first value shown in the table is for the North Region.</p>
+</blockquote>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">summary</span>(regional_sales)</span></code></pre></div>
+<pre><code>##     region            quarter             revenue         customers    
+##  Length:18          Length:18          Min.   : 89000   Min.   :324.0  
+##  Class :character   Class :character   1st Qu.:106750   1st Qu.:416.2  
+##  Mode  :character   Mode  :character   Median :122500   Median :447.5  
+##                                        Mean   :122847   Mean   :454.1  
+##                                        3rd Qu.:137250   3rd Qu.:485.0  
+##                                        Max.   :165000   Max.   :590.0</code></pre>
+<blockquote>
+<p>The range of revenue values is $89000 to $165000.</p>
+</blockquote>
+</div>
+<div id="c." class="section level2">
+<h2>c.</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="fu">unique</span>(regional_sales)</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 1   North      Q1  125000       450
+## 2   South      Q1   98000       380
+## 3    East      Q1  115000       420
+## 4    West      Q1  102000       395
+## 5   North      Q2  138000       485
+## 6   South      Q2  105000       415
+## 7    East      Q2  128000       465
+## 8    West      Q2  118000       445
+## 9   North      Q3  142000       520
+## 10  South      Q3   89000       350
+## 11   East      Q3  135000       485
+## 12   West      Q3  125000       470
+## 13  North      Q4  155000       575
+## 14  South      Q4  112000       425
+## 15   East      Q4  148000       545
+## 16  North      Q4  165000       590
+## 17  South      Q4  120000       435
+## 18  North      Q4   91250       324</code></pre>
+<blockquote>
+<p>The dataset provides 18 unique combinations of 4 Regions and 4
+Quarters, meaning we have extra data within our set.</p>
+</blockquote>
+</div>
+<div id="d." class="section level2">
+<h2>d.</h2>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">sum</span>(regional_sales<span class="sc">$</span>customers)</span></code></pre></div>
+<pre><code>## [1] 8174</code></pre>
+<blockquote>
+<p>This total customer count gives us the ability to apply metrics to
+each Quarter and Region so we can compare performance.</p>
+</blockquote>
+</div>
+</div>
+<div id="data-quality-assessment" class="section level1">
+<h1>Data Quality Assessment</h1>
+<div id="a.-1" class="section level2">
+<h2>a.</h2>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a><span class="fu">sum</span>(<span class="fu">is.na</span>(regional_sales))</span></code></pre></div>
+<pre><code>## [1] 0</code></pre>
+<blockquote>
+<p>There are 0 missing values in the dataset. Missing values can skew
+the results of our data or may be important information that we have to
+manually find.</p>
+</blockquote>
+</div>
+<div id="b.-1" class="section level2">
+<h2>b.</h2>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="fu">table</span>(regional_sales<span class="sc">$</span>region, regional_sales<span class="sc">$</span>quarter)</span></code></pre></div>
+<pre><code>##        
+##         Q1 Q2 Q3 Q4
+##   East   1  1  1  1
+##   North  1  1  1  3
+##   South  1  1  1  2
+##   West   1  1  1  0</code></pre>
+<blockquote>
+<p>Records for each combination of Region and Quarter show that there is
+a missing data entry for Region West in Quarter 4. There are also 2
+extra datasets for Region North in Q4, and 1 extra dataset for Region
+South, in Q4. This suggests there may be a combination of misreported
+data as well as extra datapoints that should either be combined or
+scrubbed from the dataset.</p>
+</blockquote>
+</div>
+<div id="c.-1" class="section level2">
+<h2>c.</h2>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>regional_sales[regional_sales<span class="sc">$</span>revenue <span class="sc">&lt;</span> <span class="dv">90000</span>, ]</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 10  South      Q3   89000       350</code></pre>
+<blockquote>
+<p>During Quarter 3, the South Region showed concerning performance
+trends with less than $90000 revenue.</p>
+</blockquote>
+</div>
+</div>
+<div id="business-logic-analysis" class="section level1">
+<h1>Business Logic Analysis</h1>
+<div id="a.-2" class="section level2">
+<h2>a.</h2>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>high_performance <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>revenue <span class="sc">&gt;</span> <span class="dv">140000</span>, ]</span>
+<span id="cb18-2"><a href="#cb18-2" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" tabindex="-1"></a>high_performance[, <span class="fu">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;quarter&quot;</span>, <span class="st">&quot;revenue&quot;</span>, <span class="st">&quot;customers&quot;</span>)]</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 9   North      Q3  142000       520
+## 13  North      Q4  155000       575
+## 15   East      Q4  148000       545
+## 16  North      Q4  165000       590</code></pre>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">nrow</span>(high_performance)</span></code></pre></div>
+<pre><code>## [1] 4</code></pre>
+<blockquote>
+<p>The Northern Region showed the majority of the highest revenues, and
+similarly the data shows Quarter 4 generating the majority of high
+revenue results. There were 4 high-performance records (revenues &gt;
+$140000). This data is skewed due to the additional Q4 entries in the
+dataset.</p>
+</blockquote>
+</div>
+<div id="b.-2" class="section level2">
+<h2>b.</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" tabindex="-1"></a>regional_sales[regional_sales<span class="sc">$</span>quarter <span class="sc">==</span> <span class="st">&quot;Q4&quot;</span> <span class="sc">&amp;</span> regional_sales<span class="sc">$</span>revenue <span class="sc">&gt;</span> <span class="dv">130000</span> <span class="sc">&amp;</span> regional_sales<span class="sc">$</span>customers <span class="sc">&gt;</span> <span class="dv">500</span>, ]</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 13  North      Q4  155000       575
+## 15   East      Q4  148000       545
+## 16  North      Q4  165000       590</code></pre>
+<blockquote>
+<p>Two of the three months that had high revenue and traffic ( traffic
+&gt; 500 and revenue &gt; $130000) were in the North Region. This data
+is useful in showing regions with high conversion rates on customers,
+generating large profits from traffic, but is also skewed by the 2
+additional data entries for North Region in Q4.</p>
+</blockquote>
+</div>
+<div id="c.-2" class="section level2">
+<h2>c.</h2>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" tabindex="-1"></a>north_east <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North&quot;</span> <span class="sc">|</span> regional_sales<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;East&quot;</span>, ]</span>
+<span id="cb24-2"><a href="#cb24-2" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" tabindex="-1"></a>north_east[, <span class="fu">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;quarter&quot;</span>, <span class="st">&quot;revenue&quot;</span>, <span class="st">&quot;customers&quot;</span>)]</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 1   North      Q1  125000       450
+## 3    East      Q1  115000       420
+## 5   North      Q2  138000       485
+## 7    East      Q2  128000       465
+## 9   North      Q3  142000       520
+## 11   East      Q3  135000       485
+## 13  North      Q4  155000       575
+## 15   East      Q4  148000       545
+## 16  North      Q4  165000       590
+## 18  North      Q4   91250       324</code></pre>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" tabindex="-1"></a><span class="fu">mean</span>(north_east<span class="sc">$</span>revenue)</span></code></pre></div>
+<pre><code>## [1] 134225</code></pre>
+</div>
+<div id="d.-1" class="section level2">
+<h2>d.</h2>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" tabindex="-1"></a>performance_flag <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>revenue <span class="sc">&lt;</span> <span class="dv">100000</span> <span class="sc">|</span> regional_sales<span class="sc">$</span>customers <span class="sc">&lt;</span> <span class="dv">400</span>, ]</span>
+<span id="cb28-2"><a href="#cb28-2" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" tabindex="-1"></a>performance_flag[, <span class="fu">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;quarter&quot;</span>, <span class="st">&quot;revenue&quot;</span>, <span class="st">&quot;customers&quot;</span>)]</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 2   South      Q1   98000       380
+## 4    West      Q1  102000       395
+## 10  South      Q3   89000       350
+## 18  North      Q4   91250       324</code></pre>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" tabindex="-1"></a>pf_count <span class="ot">&lt;-</span> <span class="fu">nrow</span>(performance_flag)</span>
+<span id="cb30-2"><a href="#cb30-2" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" tabindex="-1"></a>rs_count <span class="ot">&lt;-</span> <span class="fu">nrow</span>(regional_sales)</span>
+<span id="cb30-4"><a href="#cb30-4" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" tabindex="-1"></a>percentage <span class="ot">&lt;-</span> (pf_count <span class="sc">/</span> rs_count) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb30-6"><a href="#cb30-6" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" tabindex="-1"></a>percentage</span></code></pre></div>
+<pre><code>## [1] 22.22222</code></pre>
+<blockquote>
+<p>Quarters where revenue &gt; $100000 and customers &gt; 400 accounted
+for 4 of the 18 records, or 22% of business quarters.</p>
+</blockquote>
+</div>
+</div>
+<div id="data-aggregation-and-business-insights" class="section level1">
+<h1>Data Aggregation and Business Insights</h1>
+<div id="a.-3" class="section level2">
+<h2>a.</h2>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" tabindex="-1"></a><span class="fu">aggregate</span>(revenue <span class="sc">~</span> region, <span class="at">data =</span> regional_sales, sum)</span></code></pre></div>
+<pre><code>##   region revenue
+## 1   East  526000
+## 2  North  816250
+## 3  South  524000
+## 4   West  345000</code></pre>
+<blockquote>
+<p>The highest revenues were generated by the North Region, valued at
+$816250.</p>
+</blockquote>
+</div>
+<div id="b.-3" class="section level2">
+<h2>b.</h2>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" tabindex="-1"></a><span class="fu">aggregate</span>(customers <span class="sc">~</span> quarter, <span class="at">data =</span> regional_sales, mean)</span></code></pre></div>
+<pre><code>##   quarter customers
+## 1      Q1  411.2500
+## 2      Q2  452.5000
+## 3      Q3  456.2500
+## 4      Q4  482.3333</code></pre>
+<blockquote>
+<p>Quarter 4 shows the highest average custommer count. This may be
+explained by seasonal buying habits or a more successful marketing
+campaign running in Quarter 4, but the most likely answer is the 2
+additional datapoints which are skewing the results.</p>
+</blockquote>
+</div>
+</div>
+<div id="executive-summary-creation" class="section level1">
+<h1>Executive Summary Creation</h1>
+<div id="a.-4" class="section level2">
+<h2>a.</h2>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" tabindex="-1"></a>rev_total <span class="ot">&lt;-</span> <span class="fu">sum</span>(regional_sales<span class="sc">$</span>revenue)</span>
+<span id="cb36-2"><a href="#cb36-2" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" tabindex="-1"></a>rev_q1 <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>quarter <span class="sc">==</span> <span class="st">&quot;Q1&quot;</span>, ]</span>
+<span id="cb36-4"><a href="#cb36-4" tabindex="-1"></a>rev_q2 <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>quarter <span class="sc">==</span> <span class="st">&quot;Q2&quot;</span>, ]</span>
+<span id="cb36-5"><a href="#cb36-5" tabindex="-1"></a>rev_q3 <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>quarter <span class="sc">==</span> <span class="st">&quot;Q3&quot;</span>, ]</span>
+<span id="cb36-6"><a href="#cb36-6" tabindex="-1"></a>rev_q4 <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>quarter <span class="sc">==</span> <span class="st">&quot;Q4&quot;</span>, ]</span>
+<span id="cb36-7"><a href="#cb36-7" tabindex="-1"></a></span>
+<span id="cb36-8"><a href="#cb36-8" tabindex="-1"></a>high_performance <span class="ot">&lt;-</span> regional_sales[regional_sales<span class="sc">$</span>revenue <span class="sc">&gt;</span> <span class="dv">140000</span>, ]</span>
+<span id="cb36-9"><a href="#cb36-9" tabindex="-1"></a></span>
+<span id="cb36-10"><a href="#cb36-10" tabindex="-1"></a>rev_total</span></code></pre></div>
+<pre><code>## [1] 2211250</code></pre>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" tabindex="-1"></a>means <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb38-2"><a href="#cb38-2" tabindex="-1"></a><span class="fu">mean</span>(rev_q1<span class="sc">$</span>revenue),</span>
+<span id="cb38-3"><a href="#cb38-3" tabindex="-1"></a><span class="fu">mean</span>(rev_q2<span class="sc">$</span>revenue),</span>
+<span id="cb38-4"><a href="#cb38-4" tabindex="-1"></a><span class="fu">mean</span>(rev_q3<span class="sc">$</span>revenue),</span>
+<span id="cb38-5"><a href="#cb38-5" tabindex="-1"></a><span class="fu">mean</span>(rev_q4<span class="sc">$</span>revenue)</span>
+<span id="cb38-6"><a href="#cb38-6" tabindex="-1"></a>)</span>
+<span id="cb38-7"><a href="#cb38-7" tabindex="-1"></a></span>
+<span id="cb38-8"><a href="#cb38-8" tabindex="-1"></a>quarters <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Q1&quot;</span>, <span class="st">&quot;Q2&quot;</span>, <span class="st">&quot;Q3&quot;</span>, <span class="st">&quot;Q4&quot;</span>)</span>
+<span id="cb38-9"><a href="#cb38-9" tabindex="-1"></a></span>
+<span id="cb38-10"><a href="#cb38-10" tabindex="-1"></a>bars <span class="ot">&lt;-</span> <span class="fu">barplot</span>(</span>
+<span id="cb38-11"><a href="#cb38-11" tabindex="-1"></a>  means, </span>
+<span id="cb38-12"><a href="#cb38-12" tabindex="-1"></a>  <span class="at">names.arg =</span> quarters, </span>
+<span id="cb38-13"><a href="#cb38-13" tabindex="-1"></a>  <span class="at">main =</span> <span class="st">&quot;Average Revenue by Quarter&quot;</span>,</span>
+<span id="cb38-14"><a href="#cb38-14" tabindex="-1"></a>  <span class="at">xlab =</span> <span class="st">&quot;Quarter&quot;</span>,</span>
+<span id="cb38-15"><a href="#cb38-15" tabindex="-1"></a>  <span class="at">ylab =</span> <span class="st">&quot;Average Revenue ($)&quot;</span>,</span>
+<span id="cb38-16"><a href="#cb38-16" tabindex="-1"></a>  <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;skyblue&quot;</span>, <span class="st">&quot;lightgreen&quot;</span>, <span class="st">&quot;orange&quot;</span>, <span class="st">&quot;plum&quot;</span>)</span>
+<span id="cb38-17"><a href="#cb38-17" tabindex="-1"></a>)</span>
+<span id="cb38-18"><a href="#cb38-18" tabindex="-1"></a><span class="fu">text</span>(bars, means, <span class="at">labels =</span> <span class="fu">round</span>(means, <span class="dv">0</span>), <span class="at">pos =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="project1_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a>high_performance</span></code></pre></div>
+<pre><code>##    region quarter revenue customers
+## 9   North      Q3  142000       520
+## 13  North      Q4  155000       575
+## 15   East      Q4  148000       545
+## 16  North      Q4  165000       590</code></pre>
+</div>
+<div id="b.-4" class="section level2">
+<h2>b.</h2>
+<blockquote>
+<p>Based off of the sales data provided, we see consistent performances
+in the North Region. 3 of the top 4 performing quarters were from the
+North Region, with $462000 total revenue in its top-3 quarters.</p>
+</blockquote>
+<blockquote>
+<p>Quarterly-based, performance is consistently higher in Q4 than other
+quarters. Quarter 4 had the highest average revenue at $131875, and also
+had 3 of the 4 highest revenue quarters overall.</p>
+</blockquote>
+<hr />
+<p><a href="projects.html">← Back to Projects</a> | <a
+href="index.html">← Back to Home</a></p>
+</div>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

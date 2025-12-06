@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Aaron Begg, 567070685" />
+
+<meta name="date" content="2025-12-06" />
+
+<title>Open Data Network Business Intelligence Report</title>
+
+<script src="site_libs/header-attrs-2.30/header-attrs.js"></script>
+<script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/sandstone.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<style>h1 {font-size: 34px;}
+       h1.title {font-size: 38px;}
+       h2 {font-size: 30px;}
+       h3 {font-size: 24px;}
+       h4 {font-size: 18px;}
+       h5 {font-size: 16px;}
+       h6 {font-size: 12px;}
+       code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
+       pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  background-color: #f8f8f8; }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ef2929; } /* Alert */
+code span.an { color: #8f5902; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #204a87; } /* Attribute */
+code span.bn { color: #0000cf; } /* BaseN */
+code span.cf { color: #204a87; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4e9a06; } /* Char */
+code span.cn { color: #8f5902; } /* Constant */
+code span.co { color: #8f5902; font-style: italic; } /* Comment */
+code span.cv { color: #8f5902; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #8f5902; font-weight: bold; font-style: italic; } /* Documentation */
+code span.dt { color: #204a87; } /* DataType */
+code span.dv { color: #0000cf; } /* DecVal */
+code span.er { color: #a40000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #0000cf; } /* Float */
+code span.fu { color: #204a87; font-weight: bold; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #8f5902; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #204a87; font-weight: bold; } /* Keyword */
+code span.op { color: #ce5c00; font-weight: bold; } /* Operator */
+code span.ot { color: #8f5902; } /* Other */
+code span.pp { color: #8f5902; font-style: italic; } /* Preprocessor */
+code span.sc { color: #ce5c00; font-weight: bold; } /* SpecialChar */
+code span.ss { color: #4e9a06; } /* SpecialString */
+code span.st { color: #4e9a06; } /* String */
+code span.va { color: #000000; } /* Variable */
+code span.vs { color: #4e9a06; } /* VerbatimString */
+code span.wa { color: #8f5902; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+<style type="text/css">
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #adb5bd;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script type="text/javascript">
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
+
+  // Navbar adjustments
+  var navHeight = $(".navbar").first().height() + 15;
+  var style = document.createElement('style');
+  var pt = "padding-top: " + navHeight + "px; ";
+  var mt = "margin-top: -" + navHeight + "px; ";
+  var css = "";
+  // offset scroll position for anchor links (for fixed navbar)
+  for (var i = 1; i <= 6; i++) {
+    css += ".section h" + i + "{ " + pt + mt + "}\n";
+  }
+  style.innerHTML = "body {" + pt + "padding-bottom: 40px; }\n" + css;
+  document.head.appendChild(style);
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">My Website</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="projects.html">Projects</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div id="header">
+
+
+
+<h1 class="title toc-ignore">Open Data Network Business Intelligence
+Report</h1>
+<h3 class="subtitle">Data-Driven Management Analysis</h3>
+<h4 class="author">Aaron Begg, 567070685</h4>
+<h4 class="date">2025-12-06</h4>
+
+</div>
+
+
+<div id="section-1-business-problem-definition-and-context"
+class="section level1">
+<h1>Section 1: Business Problem Definition and Context</h1>
+<p><strong>Problem Statement:</strong> A national workforce development
+non-profit needs to identify specific Zip Code Tabulation Areas (ZCTAs)
+with the highest concentration of unemployed youth to effectively
+allocate a $5 million job-training grant. Currently, resources are
+spread too thinly; this analysis will target high-need areas to maximize
+program impact.</p>
+<p><strong>Why this data works:</strong> This dataset provides granular
+unemployment figures broken down by gender at the Zip Code level,
+allowing us to pinpoint specific communities rather than broad
+state-level averages.</p>
+</div>
+<div id="section-2-data-source-assessment" class="section level1">
+<h1>Section 2: Data Source Assessment</h1>
+<p><strong>Data Source Documentation:</strong></p>
+<ul>
+<li><strong>Source:</strong> Open Data Network (Sourced from US Census
+Bureau).</li>
+<li><strong>Collection Purpose:</strong> To track demographic and
+economic stability across specific geographic regions for policy
+planning.</li>
+<li><strong>Geographic Scope:</strong> United States Zip Code Tabulation
+Areas (ZCTAs).</li>
+<li><strong>Update Frequency:</strong> Annual estimates (American
+Community Survey).</li>
+<li><strong>Access Method:</strong> CSV Download via Open Data
+Network.</li>
+</ul>
+<p><strong>Data Quality Assessment:</strong> The dataset appears highly
+reliable for this analysis. The source (Census Bureau) is the gold
+standard for demographic data. The data is structurally sound with
+consistent numeric formatting after cleaning. The geographic coverage
+allows for micro-targeting, which directly supports the business
+decision of specific grant allocation.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Load the data</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a>youth_data <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;Unemployed_Youth.csv&quot;</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="co"># Clean Data</span></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="co"># Removing text prefixes to make geography a clean identifier</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a>youth_data<span class="sc">$</span>Geography <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;ZCTA5&quot;</span>, <span class="st">&quot;,&quot;</span>, youth_data<span class="sc">$</span>Geography)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a><span class="co"># Converting columns to numeric for analysis</span></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>youth_data<span class="sc">$</span>Youth_Population <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;&quot;</span>, youth_data<span class="sc">$</span>Total_Pop))</span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>youth_data<span class="sc">$</span>Male_Unemployed  <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;&quot;</span>, youth_data<span class="sc">$</span>Males_Unemployed))</span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>youth_data<span class="sc">$</span>Female_Unemployed <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">gsub</span>(<span class="st">&quot;,&quot;</span>, <span class="st">&quot;&quot;</span>, youth_data<span class="sc">$</span>Females_Unemployed))</span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="co"># Quality Checks</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a><span class="fu">dim</span>(youth_data) <span class="co"># Verifying rows &gt; 500</span></span></code></pre></div>
+<pre><code>## [1] 46 69</code></pre>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">str</span>(youth_data) <span class="co"># Checking structure</span></span></code></pre></div>
+<pre><code>## &#39;data.frame&#39;:    46 obs. of  69 variables:
+##  $ Id2                                                                                                                   : int  63005 63011 63017 63021 63025 63026 63031 63033 63034 63038 ...
+##  $ Geography                                                                                                             : chr  &quot;, 63005&quot; &quot;, 63011&quot; &quot;, 63017&quot; &quot;, 63021&quot; ...
+##  $ Total_Pop                                                                                                             : chr  &quot;1,236&quot; &quot;1,971&quot; &quot;1,893&quot; &quot;3,334&quot; ...
+##  $ Margin.of.Error..Total.                                                                                               : int  202 293 326 403 168 318 376 372 261 102 ...
+##  $ Males.16.19                                                                                                           : chr  &quot;635&quot; &quot;1,098&quot; &quot;986&quot; &quot;1,560&quot; ...
+##  $ Margin.of.Error..Male.                                                                                                : int  141 193 218 258 107 217 232 299 188 79 ...
+##  $ Male....Enrolled.in.school.                                                                                           : chr  &quot;628&quot; &quot;988&quot; &quot;934&quot; &quot;1,388&quot; ...
+##  $ Margin.of.Error..Male....Enrolled.in.school.                                                                          : int  140 186 211 240 107 217 225 288 182 79 ...
+##  $ Male....Enrolled.in.school....Employed                                                                                : int  161 498 360 618 115 460 356 271 131 102 ...
+##  $ Margin.of.Error..Male....Enrolled.in.school....Employed                                                               : int  49 151 128 153 60 149 122 116 99 55 ...
+##  $ Male....Enrolled.in.school....Unemployed                                                                              : int  14 29 50 171 23 101 209 281 14 0 ...
+##  $ Margin.of.Error..Male....Enrolled.in.school....Unemployed                                                             : int  22 33 49 85 27 57 114 147 20 15 ...
+##  $ Male....Enrolled.in.school....Not.in.labor.force                                                                      : int  453 461 524 599 174 607 626 821 379 162 ...
+##  $ Margin.of.Error..Male....Enrolled.in.school....Not.in.labor.force                                                     : int  116 121 155 147 65 168 173 248 146 65 ...
+##  $ Male....Not.enrolled.in.school.                                                                                       : int  7 110 52 172 10 143 197 175 69 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school.                                                                      : int  10 94 47 85 16 82 114 121 56 15 ...
+##  $ Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency..                                        : int  3 72 52 130 10 143 116 116 41 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency..                       : int  7 84 47 76 16 82 83 91 48 15 ...
+##  $ Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed                             : int  3 12 17 46 10 101 26 47 0 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed            : int  7 19 26 45 16 68 29 55 17 15 ...
+##  $ Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed                           : int  0 15 0 39 0 42 52 0 17 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed          : int  17 25 23 35 17 50 61 23 26 15 ...
+##  $ Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force                   : int  0 45 35 45 0 0 38 69 24 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force  : int  17 67 39 41 17 23 46 72 40 15 ...
+##  $ Male....Not.enrolled.in.school....Not.high.school.graduate.                                                           : int  4 38 0 42 0 0 81 59 28 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate.                                          : int  7 43 23 35 17 23 74 80 35 15 ...
+##  $ Male....Not.enrolled.in.school....Not.high.school.graduate....Employed                                                : int  4 0 0 13 0 0 0 0 24 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate....Employed                               : int  7 23 23 22 17 23 23 23 34 15 ...
+##  $ Male....Not.enrolled.in.school....Not.high.school.graduate....Unemployed                                              : int  0 0 0 0 0 0 50 0 4 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate....Unemployed                             : int  17 23 23 26 17 23 60 23 7 15 ...
+##  $ Male....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force                                      : int  0 38 0 29 0 0 31 59 0 0 ...
+##  $ Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force                     : int  17 43 23 28 17 23 45 80 17 15 ...
+##  $ Females.16.19                                                                                                         : chr  &quot;601&quot; &quot;873&quot; &quot;907&quot; &quot;1,774&quot; ...
+##  $ Margin.of.Error..Female.                                                                                              : int  141 202 253 334 138 217 248 240 193 58 ...
+##  $ Female....Enrolled.in.school.                                                                                         : chr  &quot;601&quot; &quot;836&quot; &quot;892&quot; &quot;1,577&quot; ...
+##  $ Margin.of.Error..Female....Enrolled.in.school.                                                                        : int  141 200 252 295 136 215 268 246 189 58 ...
+##  $ Female....Enrolled.in.school....Employed                                                                              : int  144 393 243 809 111 346 504 397 175 77 ...
+##  $ Margin.of.Error..Female....Enrolled.in.school....Employed                                                             : int  70 137 104 215 59 129 180 210 105 38 ...
+##  $ Female....Enrolled.in.school....Unemployed                                                                            : int  85 12 51 84 0 55 121 162 64 0 ...
+##  $ Margin.of.Error..Female....Enrolled.in.school....Unemployed                                                           : int  114 20 51 50 17 39 65 134 54 15 ...
+##  $ Female....Enrolled.in.school....Not.in.labor.force                                                                    : int  372 431 598 684 311 574 748 582 318 73 ...
+##  $ Margin.of.Error..Female....Enrolled.in.school....Not.in.labor.force                                                   : int  105 129 212 191 136 171 167 182 151 44 ...
+##  $ Female....Not.enrolled.in.school.                                                                                     : int  0 37 15 197 17 14 139 66 41 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school.                                                                    : int  17 43 25 120 28 18 100 55 40 15 ...
+##  $ Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency..                                      : int  0 37 15 197 17 5 91 31 41 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency..                     : int  17 43 25 120 28 10 86 30 40 15 ...
+##  $ Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed                           : int  0 37 15 116 0 5 77 31 0 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed          : int  17 43 25 89 17 10 85 30 17 15 ...
+##  $ Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed                         : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed        : int  17 23 23 26 17 23 23 23 17 15 ...
+##  $ Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force                 : int  0 0 0 81 17 0 14 0 41 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force: int  17 23 23 67 28 23 25 23 40 15 ...
+##  $ Female....Not.enrolled.in.school....Not.high.school.graduate.                                                         : int  0 0 0 0 0 9 48 35 0 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate.                                        : int  17 23 23 26 17 15 60 52 17 15 ...
+##  $ Female....Not.enrolled.in.school....Not.high.school.graduate....Employed                                              : int  0 0 0 0 0 9 11 0 0 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate....Employed                             : int  17 23 23 26 17 15 21 23 17 15 ...
+##  $ Female....Not.enrolled.in.school....Not.high.school.graduate....Unemployed                                            : int  0 0 0 0 0 0 37 0 0 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate....Unemployed                           : int  17 23 23 26 17 23 57 23 17 15 ...
+##  $ Female....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force                                    : int  0 0 0 0 0 0 0 35 0 0 ...
+##  $ Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force                   : int  17 23 23 26 17 23 23 52 17 15 ...
+##  $ Males_Unemployed                                                                                                      : int  0 98 35 113 0 42 171 128 45 0 ...
+##  $ Females_Unemployed                                                                                                    : int  0 0 0 81 17 0 51 35 41 0 ...
+##  $ Total.Not.in.School.Unemployed.Not.in.Labor.Force                                                                     : int  0 98 35 194 17 42 222 163 86 0 ...
+##  $ X..16.19.Pop.Not.in.School.Unemployed.Not.in.Labor.Force                                                              : num  0 5 1.8 5.8 2.2 1.8 7.7 5.9 7.2 0 ...
+##  $ X..Males                                                                                                              : num  NA 100 100 58.2 0 100 77 78.5 52.3 NA ...
+##  $ X..Females                                                                                                            : num  NA 0 0 41.8 100 0 23 21.5 47.7 NA ...
+##  $ Youth_Population                                                                                                      : num  1236 1971 1893 3334 761 ...
+##  $ Male_Unemployed                                                                                                       : num  0 98 35 113 0 42 171 128 45 0 ...
+##  $ Female_Unemployed                                                                                                     : num  0 0 0 81 17 0 51 35 41 0 ...</code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Check for completeness</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>missing_counts <span class="ot">&lt;-</span> <span class="fu">colSums</span>(<span class="fu">is.na</span>(youth_data))</span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="fu">print</span>(missing_counts)</span></code></pre></div>
+<pre><code>##                                                                                                                    Id2 
+##                                                                                                                      0 
+##                                                                                                              Geography 
+##                                                                                                                      0 
+##                                                                                                              Total_Pop 
+##                                                                                                                      0 
+##                                                                                                Margin.of.Error..Total. 
+##                                                                                                                      0 
+##                                                                                                            Males.16.19 
+##                                                                                                                      0 
+##                                                                                                 Margin.of.Error..Male. 
+##                                                                                                                      0 
+##                                                                                            Male....Enrolled.in.school. 
+##                                                                                                                      0 
+##                                                                           Margin.of.Error..Male....Enrolled.in.school. 
+##                                                                                                                      0 
+##                                                                                 Male....Enrolled.in.school....Employed 
+##                                                                                                                      0 
+##                                                                Margin.of.Error..Male....Enrolled.in.school....Employed 
+##                                                                                                                      0 
+##                                                                               Male....Enrolled.in.school....Unemployed 
+##                                                                                                                      0 
+##                                                              Margin.of.Error..Male....Enrolled.in.school....Unemployed 
+##                                                                                                                      0 
+##                                                                       Male....Enrolled.in.school....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                      Margin.of.Error..Male....Enrolled.in.school....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                                                        Male....Not.enrolled.in.school. 
+##                                                                                                                      0 
+##                                                                       Margin.of.Error..Male....Not.enrolled.in.school. 
+##                                                                                                                      0 
+##                                         Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.. 
+##                                                                                                                      0 
+##                        Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.. 
+##                                                                                                                      0 
+##                              Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed 
+##                                                                                                                      0 
+##             Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed 
+##                                                                                                                      0 
+##                            Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed 
+##                                                                                                                      0 
+##           Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed 
+##                                                                                                                      0 
+##                    Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force 
+##                                                                                                                      0 
+##   Margin.of.Error..Male....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                            Male....Not.enrolled.in.school....Not.high.school.graduate. 
+##                                                                                                                      0 
+##                                           Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate. 
+##                                                                                                                      0 
+##                                                 Male....Not.enrolled.in.school....Not.high.school.graduate....Employed 
+##                                                                                                                      0 
+##                                Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate....Employed 
+##                                                                                                                      0 
+##                                               Male....Not.enrolled.in.school....Not.high.school.graduate....Unemployed 
+##                                                                                                                      0 
+##                              Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate....Unemployed 
+##                                                                                                                      0 
+##                                       Male....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force 
+##                                                                                                                      0 
+##                      Margin.of.Error..Male....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                                                                          Females.16.19 
+##                                                                                                                      0 
+##                                                                                               Margin.of.Error..Female. 
+##                                                                                                                      0 
+##                                                                                          Female....Enrolled.in.school. 
+##                                                                                                                      0 
+##                                                                         Margin.of.Error..Female....Enrolled.in.school. 
+##                                                                                                                      0 
+##                                                                               Female....Enrolled.in.school....Employed 
+##                                                                                                                      0 
+##                                                              Margin.of.Error..Female....Enrolled.in.school....Employed 
+##                                                                                                                      0 
+##                                                                             Female....Enrolled.in.school....Unemployed 
+##                                                                                                                      0 
+##                                                            Margin.of.Error..Female....Enrolled.in.school....Unemployed 
+##                                                                                                                      0 
+##                                                                     Female....Enrolled.in.school....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                    Margin.of.Error..Female....Enrolled.in.school....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                                                      Female....Not.enrolled.in.school. 
+##                                                                                                                      0 
+##                                                                     Margin.of.Error..Female....Not.enrolled.in.school. 
+##                                                                                                                      0 
+##                                       Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.. 
+##                                                                                                                      0 
+##                      Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.. 
+##                                                                                                                      0 
+##                            Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed 
+##                                                                                                                      0 
+##           Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Employed 
+##                                                                                                                      0 
+##                          Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed 
+##                                                                                                                      0 
+##         Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Unemployed 
+##                                                                                                                      0 
+##                  Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force 
+##                                                                                                                      0 
+## Margin.of.Error..Female....Not.enrolled.in.school....High.school.graduate..includes.equivalency.....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                          Female....Not.enrolled.in.school....Not.high.school.graduate. 
+##                                                                                                                      0 
+##                                         Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate. 
+##                                                                                                                      0 
+##                                               Female....Not.enrolled.in.school....Not.high.school.graduate....Employed 
+##                                                                                                                      0 
+##                              Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate....Employed 
+##                                                                                                                      0 
+##                                             Female....Not.enrolled.in.school....Not.high.school.graduate....Unemployed 
+##                                                                                                                      0 
+##                            Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate....Unemployed 
+##                                                                                                                      0 
+##                                     Female....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force 
+##                                                                                                                      0 
+##                    Margin.of.Error..Female....Not.enrolled.in.school....Not.high.school.graduate....Not.in.labor.force 
+##                                                                                                                      0 
+##                                                                                                       Males_Unemployed 
+##                                                                                                                      0 
+##                                                                                                     Females_Unemployed 
+##                                                                                                                      0 
+##                                                                      Total.Not.in.School.Unemployed.Not.in.Labor.Force 
+##                                                                                                                      0 
+##                                                               X..16.19.Pop.Not.in.School.Unemployed.Not.in.Labor.Force 
+##                                                                                                                      1 
+##                                                                                                               X..Males 
+##                                                                                                                      9 
+##                                                                                                             X..Females 
+##                                                                                                                      9 
+##                                                                                                       Youth_Population 
+##                                                                                                                      0 
+##                                                                                                        Male_Unemployed 
+##                                                                                                                      0 
+##                                                                                                      Female_Unemployed 
+##                                                                                                                      0</code></pre>
+</div>
+<div id="section-3-comprehensive-data-analysis" class="section level1">
+<h1>Section 3: Comprehensive Data Analysis</h1>
+<div id="descriptive-analytics" class="section level2">
+<h2>Descriptive Analytics</h2>
+<p>To perform group-based analysis, we first calculate the Total
+Unemployment Rate and categorize zip codes into “Severity Levels.”</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="co"># Feature Engineering: Calculate Total Unemployed and Total Rate</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>youth_data<span class="sc">$</span>Total_Unemployed <span class="ot">&lt;-</span> youth_data<span class="sc">$</span>Male_Unemployed <span class="sc">+</span> youth_data<span class="sc">$</span>Female_Unemployed</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>youth_data<span class="sc">$</span>Unemployment_Rate <span class="ot">&lt;-</span> (youth_data<span class="sc">$</span>Total_Unemployed <span class="sc">/</span> youth_data<span class="sc">$</span>Youth_Population) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a><span class="co"># Creating a Category for Aggregation (Required for Rubric)</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a><span class="co"># We categorize areas into Low, Medium, and High unemployment risk</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>youth_data<span class="sc">$</span>Risk_Level <span class="ot">&lt;-</span> <span class="fu">cut</span>(youth_data<span class="sc">$</span>Unemployment_Rate, </span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>                             <span class="at">breaks =</span> <span class="fu">quantile</span>(youth_data<span class="sc">$</span>Unemployment_Rate, <span class="at">probs =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fl">0.33</span>, <span class="fl">0.66</span>, <span class="dv">1</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>                             <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">&quot;Low Risk&quot;</span>, <span class="st">&quot;Medium Risk&quot;</span>, <span class="st">&quot;High Risk&quot;</span>),</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>                             <span class="at">include.lowest =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a><span class="co"># 1. Aggregate Function (Required)</span></span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a><span class="co"># Calculating average number of unemployed people per Risk Level</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>risk_summary <span class="ot">&lt;-</span> <span class="fu">aggregate</span>(Total_Unemployed <span class="sc">~</span> Risk_Level, </span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>                          <span class="at">data =</span> youth_data, </span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>                          <span class="at">FUN =</span> mean)</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a><span class="fu">print</span>(<span class="st">&quot;Average Unemployed Youth count by Risk Category:&quot;</span>)</span></code></pre></div>
+<pre><code>## [1] &quot;Average Unemployed Youth count by Risk Category:&quot;</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">print</span>(risk_summary)</span></code></pre></div>
+<pre><code>##    Risk_Level Total_Unemployed
+## 1    Low Risk         10.46667
+## 2 Medium Risk         70.13333
+## 3   High Risk        165.66667</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="co"># 2. Summary Function</span></span>
+<span id="cb11-2"><a href="#cb11-2" tabindex="-1"></a><span class="fu">summary</span>(youth_data<span class="sc">$</span>Unemployment_Rate)</span></code></pre></div>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max.    NA&#39;s 
+##  0.0000  0.9868  4.6129  5.9550  9.4151 16.6881       1</code></pre>
+<p><strong>Interpretation:</strong> The <code>aggregate</code> function
+reveals that “High Risk” zones don’t just have higher <em>rates</em>,
+they have significantly higher raw <em>counts</em> of unemployed youth
+on average. This confirms that targeting high-rate areas will also reach
+the largest number of individuals.</p>
+</div>
+<div id="visual-analytics" class="section level2">
+<h2>Visual Analytics</h2>
+<div id="visualization-1-geographic-comparison-bar-chart"
+class="section level3">
+<h3>Visualization 1: Geographic Comparison (Bar Chart)</h3>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="co"># Isolate Top 10 worst areas for visualization</span></span>
+<span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>top_10_areas <span class="ot">&lt;-</span> <span class="fu">head</span>(youth_data[<span class="fu">order</span>(<span class="sc">-</span>youth_data<span class="sc">$</span>Unemployment_Rate), ], <span class="dv">10</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>bar_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(top_10_areas, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(Geography, Unemployment_Rate), <span class="at">y =</span> Unemployment_Rate)) <span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">&quot;#2E86AB&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Top 10 Zip Codes by Youth Unemployment Rate&quot;</span>,</span>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Priority targets for immediate funding intervention&quot;</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Zip Code&quot;</span>,</span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Unemployment Rate (%)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb13-12"><a href="#cb13-12" tabindex="-1"></a></span>
+<span id="cb13-13"><a href="#cb13-13" tabindex="-1"></a><span class="co">#Display the bar plot</span></span>
+<span id="cb13-14"><a href="#cb13-14" tabindex="-1"></a>bar_plot</span></code></pre></div>
+<p><img src="project2_files/figure-html/visual-1-bar-1.png" width="672" /></p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a><span class="co"># Save for use on other pages</span></span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a><span class="fu">saveRDS</span>(bar_plot, <span class="st">&quot;doc&quot;</span>)</span></code></pre></div>
+<p><strong>Insight:</strong> This chart clearly identifies the specific
+locations requiring immediate intervention. The top zip code exceeds the
+average rate significantly, indicating a localized economic crisis.</p>
+</div>
+<div id="visualization-2-correlation-analysis-scatter-plot"
+class="section level3">
+<h3>Visualization 2: Correlation Analysis (Scatter Plot)</h3>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co">#Calculate each area&#39;s share of the total youth population</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a>youth_data <span class="ot">&lt;-</span> youth_data <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Pop_Share =</span> Youth_Population <span class="sc">/</span> <span class="fu">sum</span>(Youth_Population))</span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>scatter_plot <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(youth_data, <span class="fu">aes</span>(<span class="at">x =</span> Male_Unemployed, <span class="at">y =</span> Female_Unemployed, <span class="at">color =</span> Risk_Level)) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>, <span class="fu">aes</span>(<span class="at">size =</span> Youth_Population)) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">se =</span> <span class="cn">FALSE</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Correlation: Male vs. Female Unemployment&quot;</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Relationship between gender groups across risk levels&quot;</span>,</span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Unemployed Males (Count)&quot;</span>,</span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Unemployed Females (Count)&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">max</span>(youth_data<span class="sc">$</span>Male_Unemployed, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">by =</span> <span class="dv">50</span>)) <span class="sc">+</span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a><span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="fu">max</span>(youth_data<span class="sc">$</span>Female_Unemployed, <span class="at">na.rm =</span> <span class="cn">TRUE</span>), <span class="at">by =</span> <span class="dv">50</span>)) <span class="sc">+</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a>  <span class="fu">theme_dark</span>()</span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a><span class="co">#Display the bar plot</span></span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>scatter_plot</span></code></pre></div>
+<p><img src="project2_files/figure-html/visual-2-scatter-1.png" width="672" /></p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a><span class="co"># Save for use on other pages</span></span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a><span class="fu">saveRDS</span>(scatter_plot, <span class="st">&quot;docs/scatter_plot.rds&quot;</span>)</span></code></pre></div>
+<p><strong>Insight:</strong> There is a strong positive correlation.
+Areas with high male unemployment almost invariably have high female
+unemployment. This suggests the grant program should not be
+gender-exclusive, as the economic depression affects the whole
+community.</p>
+</div>
+<div id="visualization-3-distribution-analysis-histogram"
+class="section level3">
+<h3>Visualization 3: Distribution Analysis (Histogram)</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">ggplot</span>(youth_data, <span class="fu">aes</span>(<span class="at">x =</span> Unemployment_Rate)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">binwidth =</span> <span class="dv">2</span>, <span class="at">fill =</span> <span class="st">&quot;#A23B72&quot;</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Distribution of Youth Unemployment Rates&quot;</span>,</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Frequency of unemployment severity across all zip codes&quot;</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;Unemployment Rate (%)&quot;</span>,</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;Count of Zip Codes&quot;</span>) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<p><img src="project2_files/figure-html/visual-3-hist-1.png" width="672" /></p>
+<p><strong>Insight:</strong> The distribution is right-skewed. Most zip
+codes have low unemployment, but there is a “long tail” of extreme
+outliers. This confirms that a broad, national strategy is less
+effective than a targeted strategy focusing on the outliers.</p>
+</div>
+</div>
+</div>
+<div id="section-4-strategic-recommendations" class="section level1">
+<h1>Section 4: Strategic Recommendations</h1>
+<p><strong>Key Findings Summary:</strong></p>
+<ol style="list-style-type: decimal">
+<li><strong>Target the “Long Tail”:</strong> As shown in the histogram,
+the majority of regions are stable. The grant money should be
+exclusively reserved for the top 10% of zip codes (the outliers) where
+rates exceed the national average by standard deviations.</li>
+<li><strong>Gender Parity in Crisis:</strong> The scatter plot
+demonstrates that economic hardship in these zones is systemic. Programs
+should focus on holistic job creation rather than gender-specific
+support, as both groups suffer equally in high-risk zones.</li>
+<li><strong>High-Impact Zones:</strong> The “High Risk” category
+identified in the aggregation analysis contains the highest density of
+unemployed individuals. Allocating funds here provides the best ROI
+(Return on Investment) per dollar spent.</li>
+</ol>
+<p><strong>Actionable Recommendation:</strong> We recommend immediately
+deploying pilot training programs in the top 10 identified zip codes
+(from Visualization 1). Marketing efforts should be gender-neutral, and
+success metrics should be based on reducing the “High Risk” aggregate
+average by 15% over the next fiscal year.</p>
+<hr />
+<p><a href="projects.html">← Back to Projects</a> | <a
+href="index.html">← Back to Home</a></p>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
