@@ -1,0 +1,63 @@
+
+---
+title: "About Me"
+site: my-portfolio
+---
+
+![](images/profile.jpg){width=250px}
+
+## Aaron Begg
+
+I'm a second-year student at VIU in the Business Administration program, and have developed this portfolio to share the skills that I've learned in data analysis, business intelligence, and statistical computing.
+
+---
+
+## Skills & Tools
+
+**Analysis:**
+
+- 🔍 R for data analysis
+- 🧼 Data cleaning and transformation
+- 📃 Statistical analysis and interpretation
+
+**Visualization & Reporting:**
+
+- 📊 ggplot2 for professional visualizations
+- 📰 R Markdown for reproducible reports
+- 💭 Data storytelling for business audiences
+
+**Data Sources:**
+
+- 📂 CSV file processing
+- 🛜 Government open data (via APIs)
+- 🏢 Business performance datasets
+
+---
+
+## Education
+
+**VIU** - Bachelor of Business Administration (BBA)
+
+September 2024 - Current
+
+*Expected Graduation: 2028*
+
+Relevant Coursework:
+
+- Data Analysis for E-Management
+- Business Statistics
+- Information Systems
+
+---
+
+## Contact
+
+Feel free to connect with me:
+
+- ✉️ Email: [aaronfraserbegg@gmail.com](mailto:aaronfraserbegg@gmail.com)
+- 🌐 LinkedIn: [Aaron Begg](https://www.linkedin.com/in/aaron-begg-7b92a82a1/)
+- 👾 GitHub: [aaronbegg](https://github.com/aaronbegg)
+
+---
+
+[← Back to Home](index.html)

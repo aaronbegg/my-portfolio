@@ -1,0 +1,184 @@
+---
+title: "Open Data Network Business Intelligence Report"
+subtitle: "Data-Driven Management Analysis"
+author:
+    - Aaron Begg, 567070685
+date: "`r Sys.Date()`"
+site: my-portfolio
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+# Loading necessary libraries for visualization
+library(ggplot2)
+library(dplyr)
+```
+
+# Section 1: Business Problem Definition and Context
+
+**Problem Statement:**
+A national workforce development non-profit needs to identify specific Zip Code Tabulation Areas (ZCTAs) with the highest concentration of unemployed youth to effectively allocate a $5 million job-training grant. Currently, resources are spread too thinly; this analysis will target high-need areas to maximize program impact.
+
+**Why this data works:**
+This dataset provides granular unemployment figures broken down by gender at the Zip Code level, allowing us to pinpoint specific communities rather than broad state-level averages.
+
+# Section 2: Data Source Assessment
+
+**Data Source Documentation:**
+
+  * **Source:** Open Data Network (Sourced from US Census Bureau).
+  * **Collection Purpose:** To track demographic and economic stability across specific geographic regions for policy planning.
+  * **Geographic Scope:** United States Zip Code Tabulation Areas (ZCTAs).
+  * **Update Frequency:** Annual estimates (American Community Survey).
+  * **Access Method:** CSV Download via Open Data Network.
+
+**Data Quality Assessment:**
+The dataset appears highly reliable for this analysis. The source (Census Bureau) is the gold standard for demographic data. The data is structurally sound with consistent numeric formatting after cleaning. The geographic coverage allows for micro-targeting, which directly supports the business decision of specific grant allocation.
+
+```{r load-and-clean, echo=TRUE}
+
+# Load the data
+youth_data <- read.csv("Unemployed_Youth.csv")
+
+# Clean Data
+# Removing text prefixes to make geography a clean identifier
+youth_data$Geography <- gsub("ZCTA5", ",", youth_data$Geography)
+
+# Converting columns to numeric for analysis
+youth_data$Youth_Population <- as.numeric(gsub(",", "", youth_data$Total_Pop))
+youth_data$Male_Unemployed  <- as.numeric(gsub(",", "", youth_data$Males_Unemployed))
+youth_data$Female_Unemployed <- as.numeric(gsub(",", "", youth_data$Females_Unemployed))
+
+
+# Quality Checks
+dim(youth_data) # Verifying rows > 500
+str(youth_data) # Checking structure
+
+# Check for completeness
+missing_counts <- colSums(is.na(youth_data))
+print(missing_counts)
+```
+
+# Section 3: Comprehensive Data Analysis
+
+## Descriptive Analytics
+
+To perform group-based analysis, we first calculate the Total Unemployment Rate and categorize zip codes into "Severity Levels."
+
+```{r aggregation, echo=TRUE}
+# Feature Engineering: Calculate Total Unemployed and Total Rate
+youth_data$Total_Unemployed <- youth_data$Male_Unemployed + youth_data$Female_Unemployed
+youth_data$Unemployment_Rate <- (youth_data$Total_Unemployed / youth_data$Youth_Population) * 100
+
+# Creating a Category for Aggregation (Required for Rubric)
+# We categorize areas into Low, Medium, and High unemployment risk
+youth_data$Risk_Level <- cut(youth_data$Unemployment_Rate, 
+                             breaks = quantile(youth_data$Unemployment_Rate, probs = c(0, 0.33, 0.66, 1), na.rm = TRUE),
+                             labels = c("Low Risk", "Medium Risk", "High Risk"),
+                             include.lowest = TRUE)
+
+# 1. Aggregate Function (Required)
+# Calculating average number of unemployed people per Risk Level
+risk_summary <- aggregate(Total_Unemployed ~ Risk_Level, 
+                          data = youth_data, 
+                          FUN = mean)
+
+print("Average Unemployed Youth count by Risk Category:")
+print(risk_summary)
+
+# 2. Summary Function
+summary(youth_data$Unemployment_Rate)
+```
+
+**Interpretation:**
+The `aggregate` function reveals that "High Risk" zones don't just have higher *rates*, they have significantly higher raw *counts* of unemployed youth on average. This confirms that targeting high-rate areas will also reach the largest number of individuals.
+
+## Visual Analytics
+
+### Visualization 1: Geographic Comparison (Bar Chart)
+
+```{r visual-1-bar, echo=TRUE}
+# Isolate Top 10 worst areas for visualization
+top_10_areas <- head(youth_data[order(-youth_data$Unemployment_Rate), ], 10)
+
+bar_plot <- ggplot(top_10_areas, aes(x = reorder(Geography, Unemployment_Rate), y = Unemployment_Rate)) +
+  geom_col(fill = "#2E86AB") +
+  coord_flip() +
+  labs(title = "Top 10 Zip Codes by Youth Unemployment Rate",
+       subtitle = "Priority targets for immediate funding intervention",
+       x = "Zip Code",
+       y = "Unemployment Rate (%)") +
+  theme_minimal()
+
+#Display the bar plot
+bar_plot
+
+# Save for use on other pages
+saveRDS(bar_plot, "doc")
+
+```
+
+**Insight:** This chart clearly identifies the specific locations requiring immediate intervention. The top zip code exceeds the average rate significantly, indicating a localized economic crisis.
+
+### Visualization 2: Correlation Analysis (Scatter Plot)
+
+```{r visual-2-scatter, echo=TRUE}
+
+#Calculate each area's share of the total youth population
+youth_data <- youth_data %>%
+  mutate(Pop_Share = Youth_Population / sum(Youth_Population))
+
+
+scatter_plot <- ggplot(youth_data, aes(x = Male_Unemployed, y = Female_Unemployed, color = Risk_Level)) +
+  geom_point(alpha = 0.6, aes(size = Youth_Population)) +
+  geom_smooth(method = "lm", se = FALSE, color = "white", alpha = 0.2) +
+  labs(title = "Correlation: Male vs. Female Unemployment",
+       subtitle = "Relationship between gender groups across risk levels",
+       x = "Unemployed Males (Count)",
+       y = "Unemployed Females (Count)") +
+  scale_x_continuous(breaks = seq(0, max(youth_data$Male_Unemployed, na.rm = TRUE), by = 50)) +
+scale_y_continuous(breaks = seq(0, max(youth_data$Female_Unemployed, na.rm = TRUE), by = 50)) +
+  theme(plot.background = element_rect(fill = "#E6F2FF", color = NA), # background around entire plot
+panel.background = element_rect(fill = "#E6F2FF", color = NA), # background behind data area
+panel.grid.major = element_line(color = "gray90"), # optional: subtle grid
+panel.grid.minor = element_blank()
+)
+
+#Display the bar plot
+scatter_plot
+
+# Save for use on other pages
+saveRDS(scatter_plot, "docs/scatter_plot.rds")
+
+```
+
+**Insight:** There is a strong positive correlation. Areas with high male unemployment almost invariably have high female unemployment. This suggests the grant program should not be gender-exclusive, as the economic depression affects the whole community.
+
+### Visualization 3: Distribution Analysis (Histogram)
+
+```{r visual-3-hist, echo=TRUE}
+ggplot(youth_data, aes(x = Unemployment_Rate)) +
+  geom_histogram(binwidth = 2, fill = "#A23B72", color = "white") +
+  labs(title = "Distribution of Youth Unemployment Rates",
+       subtitle = "Frequency of unemployment severity across all zip codes",
+       x = "Unemployment Rate (%)",
+       y = "Count of Zip Codes") +
+  theme_minimal()
+```
+
+**Insight:** The distribution is right-skewed. Most zip codes have low unemployment, but there is a "long tail" of extreme outliers. This confirms that a broad, national strategy is less effective than a targeted strategy focusing on the outliers.
+
+# Section 4: Strategic Recommendations
+
+**Key Findings Summary:**
+
+1.  **Target the "Long Tail":** As shown in the histogram, the majority of regions are stable. The grant money should be exclusively reserved for the top 10% of zip codes (the outliers) where rates exceed the national average by standard deviations.
+2.  **Gender Parity in Crisis:** The scatter plot demonstrates that economic hardship in these zones is systemic. Programs should focus on holistic job creation rather than gender-specific support, as both groups suffer equally in high-risk zones.
+3.  **High-Impact Zones:** The "High Risk" category identified in the aggregation analysis contains the highest density of unemployed individuals. Allocating funds here provides the best ROI (Return on Investment) per dollar spent.
+
+**Actionable Recommendation:**
+We recommend immediately deploying pilot training programs in the top 10 identified zip codes (from Visualization 1). Marketing efforts should be gender-neutral, and success metrics should be based on reducing the "High Risk" aggregate average by 15% over the next fiscal year.
+
+---
+
+[← Back to Projects](projects.html) | [← Back to Home](index.html)
